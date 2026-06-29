@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Logging Utilities
+SS7 Termux Tools - Logging Utilities
 
 Handles all logging for the SS7 tools.
 """
@@ -18,19 +18,26 @@ def setup_logger(name: str = 'ss7_tools', level: int = logging.INFO) -> logging.
     logger = logging.getLogger(name)
     logger.setLevel(level)
     
+    # Prevent duplicate handlers
+    if logger.handlers:
+        return logger
+    
     # Create logs directory if it doesn't exist
     log_dir = 'logs'
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
+    try:
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+    except Exception:
+        pass
     
     # Create formatters
     console_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        '%(asctime)s - %(levelname)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
     
     file_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
+        '%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
     
@@ -41,10 +48,13 @@ def setup_logger(name: str = 'ss7_tools', level: int = logging.INFO) -> logging.
     logger.addHandler(console_handler)
     
     # File handler
-    log_file = os.path.join(log_dir, f'ss7_tools_{datetime.now().strftime("%Y%m%d")}.log')
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(file_formatter)
-    logger.addHandler(file_handler)
+    try:
+        log_file = os.path.join(log_dir, f'ss7_tools_{datetime.now().strftime("%Y%m%d")}.log')
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(file_formatter)
+        logger.addHandler(file_handler)
+    except Exception:
+        pass
     
     return logger
