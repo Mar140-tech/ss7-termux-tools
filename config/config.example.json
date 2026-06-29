@@ -1,0 +1,23 @@
+{
+  "network": {
+    "timeout": 30,
+    "retries": 3,
+    "interfaces": [],
+    "rate_limit": 100
+  },
+  "ss7": {
+    "protocol_version": "ITUQ773",
+    "debug": false,
+    "capture_traffic": true,
+    "ports": [5060, 5061, 8888, 9999]
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/ss7_tools.log",
+    "format": "%(asctime)s - %(levelname)s - %(message)s"
+  },
+  "output": {
+    "format": "json",
+    "directory": "results"
+  }
+}
